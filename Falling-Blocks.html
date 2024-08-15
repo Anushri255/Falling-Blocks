@@ -60,7 +60,56 @@
     </div>
     <div id="game-over" style="display: none;">Game Over!</div>
     <script>
+        const gameBoard = document.getElementById('game'); 
+        const slider = document.getElementById('slider');
+        const block = document.getElementById('block');
+        const gameOverText = document.getElementById('game-over');
 
+        let sliderX = gameBoard.clientWidth / 2 - slider.clientWidth / 2;
+        let blockX = Math.random() * (gameBoard.clientWidth - block.clientWidth);
+        let blockY = 0;
+        let speed = 3;
+        let gameOver = false;
+
+        function moveSlider(event) {
+            if (event.key === 'ArrowLeft') {
+                sliderX -= 20;
+                } 
+            
+            else if (event.key === 'ArrowRight') {
+                sliderX += 20;
+            }   
+
+            sliderX = Math.max(0, Math.min(gameBoard.clientWidth - slider.clientWidth, sliderX));
+            slider.style.left = sliderX + 'px';
+        }
+
+        function updateBlockPosition() {
+            blockY += speed;
+            block.style.top = blockY + 'px';
+            block.style.left = blockX + 'px';
+
+            if (blockY + block.clientHeight >= gameBoard.clientHeight) {
+                if (blockX + block.clientWidth > sliderX && blockX < sliderX + slider.clientWidth) {
+                    blockY = 0;
+                    blockX = Math.random() * (gameBoard.clientWidth - block.clientWidth);
+                    speed += 0.5;
+                } 
+                
+                else {
+                    gameOver = true;
+                    gameOverText.style.display = 'block';
+                }
+            }
+
+            if (!gameOver) {
+                requestAnimationFrame(updateBlockPosition);
+                    }
+        }
+
+        document.addEventListener('keydown', moveSlider);
+
+        updateBlockPosition();
     </script>
 </body>
 </html>
