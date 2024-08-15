@@ -2,6 +2,8 @@
 
 A web game where you catch falling blocks with a slider.
 
+## Hosted on https://anushri255.github.io/Falling-Blocks.io/ (click on start to start the game!)
+
 ## Features
 
 - **Two Difficulty Levels**: Choose between Easy and Hard. Hard mode is a bit more intense, with faster falling blocks and quicker speed increases.
