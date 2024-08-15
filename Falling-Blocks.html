@@ -61,15 +61,26 @@
             font-size: 16px;
             cursor: pointer;
         }
+
+        #level-selector {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
+    <h1>User Score: <span id="score">0</span></h1>
+    <div id="level-selector">
+        <label for="level">Select Level:</label>
+        <select id="level">
+            <option value="easy">Easy</option>
+            <option value="hard">Hard</option>
+        </select>
+    </div>
     <div id="game">
-        <h1>User Score: <span id="score">0</span></h1>
         <div id="slider"></div>
         <div id="block"></div>
     </div>
-    <div id="game-over" style="display: none;">Game Over!</div>
+    <div id="game-over">Game Over!</div>
     <div id="controls">
         <button id="start-btn">Start</button>
         <button id="restart-btn" style="display: none;">Restart</button>
@@ -82,12 +93,13 @@
         const scoreDisplay = document.getElementById('score');
         const startBtn = document.getElementById('start-btn');
         const restartBtn = document.getElementById('restart-btn');
+        const levelSelector = document.getElementById('level');
 
         let score = 0;
-        let sliderX = gameBoard.clientWidth / 2 - slider.clientWidth / 2;
-        let blockX = Math.random() * (gameBoard.clientWidth - block.clientWidth);
+        let sliderX;
+        let blockX;
         let blockY = 0;
-        let speed = 3;
+        let speed;
         let gameOver = false;
         let gameRunning = false;
 
@@ -96,13 +108,14 @@
             blockY = 0;
             blockX = Math.random() * (gameBoard.clientWidth - block.clientWidth);
             sliderX = gameBoard.clientWidth / 2 - slider.clientWidth / 2;
-            speed = 3;
+            speed = levelSelector.value === 'easy' ? 3 : 6; // ensure that speed change based on level
             gameOver = false;
             scoreDisplay.innerText = score;
             block.style.top = blockY + 'px';
             block.style.left = blockX + 'px';
             slider.style.left = sliderX + 'px';
             gameOverText.style.display = 'none';
+            restartBtn.style.display = 'none';
         }
 
         function startGame() {
@@ -141,7 +154,7 @@
                 if (blockX + block.clientWidth > sliderX && blockX < sliderX + slider.clientWidth) {
                     blockY = 0;
                     blockX = Math.random() * (gameBoard.clientWidth - block.clientWidth);
-                    speed += 0.5;
+                    speed += levelSelector.value === 'easy' ? 0.2 : 0.5;
                     score++;
                     scoreDisplay.innerText = score;
                 } else {
